@@ -40,7 +40,7 @@ const FooterContent = () => {
           <Typography target='_blank' component={LinkStyled} href='#'>
             User Manual
           </Typography>
-          <Typography target='_blank' component={LinkStyled} href='https://insix.com'>
+          <Typography target='_blank' component={LinkStyled} href='https://github.com/thowzifab/ParcelTrack/issues/new'>
             Report Issue
           </Typography>
         </Box>
