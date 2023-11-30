@@ -9,7 +9,7 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'tabler:server'
     },
     {
-      title: 'Servers Status',
+      title: 'Server Status',
       path: '/status',
       icon: 'tabler:chart-pie'
     },
@@ -17,8 +17,15 @@ const navigation = (): VerticalNavItemsType => {
       path: '/settings',
       action: 'read',
       subject: 'settings',
-      title: 'Servers Settings',
+      title: 'Server Settings',
       icon: 'tabler:settings-cog'
+    },
+    {
+      path: '/add-job',
+      action: 'read',
+      subject: 'settings',
+      title: 'Add Scanning Jobs',
+      icon: 'gg:add'
     }
   ]
 }

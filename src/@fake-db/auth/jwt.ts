@@ -17,7 +17,7 @@ const users: UserDataType[] = [
     password: 'admin',
     fullName: 'John Doe',
     username: 'johndoe',
-    email: 'admin@vuexy.com'
+    email: 'admin@parceltrack.com'
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const users: UserDataType[] = [
     password: 'client',
     fullName: 'Jane Doe',
     username: 'janedoe',
-    email: 'client@vuexy.com'
+    email: 'client@parceltrack.com'
   }
 ]
 
