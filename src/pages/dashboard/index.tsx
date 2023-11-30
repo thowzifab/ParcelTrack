@@ -3,7 +3,6 @@ import { SyntheticEvent, useState } from 'react'
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Tab from '@mui/material/Tab'
@@ -16,6 +15,14 @@ import AmazonTotalScans from 'src/views/dashboard/AmazonTotalScans'
 import AmazonTargetTotalScans from 'src/views/dashboard/AmazonTargetTotalScans'
 import AmazonCBSAHolds from 'src/views/dashboard/AmazonCBSAHolds'
 import AmazonOGDSHolds from 'src/views/dashboard/AmazonOGDSHolds'
+import MainwayTotalScans from 'src/views/dashboard/MainwayTotalScans'
+import MainwayTargetTotalScans from 'src/views/dashboard/MainwayTargetTotalScans'
+import MainwayCBSAHolds from 'src/views/dashboard/MainwayCBSAHolds'
+import MainwayOGDSHolds from 'src/views/dashboard/MainwayOGDSHolds'
+import PBTotalScans from 'src/views/dashboard/PBTotalScans'
+import PBTargetTotalScans from 'src/views/dashboard/PBTargetTotalScans'
+import PBCBSAHolds from 'src/views/dashboard/PBCBSAHolds'
+import PBOGDSHolds from 'src/views/dashboard/PBOGDSHolds'
 
 const Home = () => {
   // ** State
@@ -69,16 +76,76 @@ const Home = () => {
         </Grid>
       </TabPanel>
       <TabPanel value='2'>
-        <Typography>
-          Chocolate bar carrot cake candy canes sesame snaps. Cupcake pie gummi bears jujubes candy canes. Chupa chups
-          sesame snaps halvah.
-        </Typography>
+        <Grid container spacing={6}>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='Total Scans'></CardHeader>
+              <CardContent>
+                <MainwayTotalScans />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='Target Total Scans'></CardHeader>
+              <CardContent>
+                <MainwayTargetTotalScans />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='CBSA Holds'></CardHeader>
+              <CardContent>
+                <MainwayCBSAHolds />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='OGDS Holds'></CardHeader>
+              <CardContent>
+                <MainwayOGDSHolds />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </TabPanel>
       <TabPanel value='3'>
-        <Typography>
-          PB Danish tiramisu jujubes cupcake chocolate bar cake cheesecake chupa chups. Macaroon ice cream tootsie roll
-          carrot cake gummi bears.
-        </Typography>
+        <Grid container spacing={6}>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='Total Scans'></CardHeader>
+              <CardContent>
+                <PBTotalScans />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='Target Total Scans'></CardHeader>
+              <CardContent>
+                <PBTargetTotalScans />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='CBSA Holds'></CardHeader>
+              <CardContent>
+                <PBCBSAHolds />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title='OGDS Holds'></CardHeader>
+              <CardContent>
+                <PBOGDSHolds />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </TabPanel>
     </TabContext>
   )
