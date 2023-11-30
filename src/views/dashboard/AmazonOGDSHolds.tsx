@@ -59,7 +59,7 @@ const AmazonOGDSHolds = () => {
     tooltip: {
       custom(data: any) {
         return `<div class='bar-chart'>
-          <span>${data.series[data.seriesIndex][data.dataPointIndex]}%</span>
+          <span>${data.series[data.seriesIndex][data.dataPointIndex]}</span>
         </div>`
       }
     },
