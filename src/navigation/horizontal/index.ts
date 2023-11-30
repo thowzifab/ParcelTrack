@@ -8,7 +8,7 @@ const navigation = (): HorizontalNavItemsType => [
     icon: 'tabler:server'
   },
   {
-    title: 'Servers Status',
+    title: 'Server Status',
     path: '/status',
     icon: 'tabler:chart-pie'
   },
@@ -16,8 +16,15 @@ const navigation = (): HorizontalNavItemsType => [
     path: '/settings',
     action: 'read',
     subject: 'settings',
-    title: 'Servers Settings',
+    title: 'Server Settings',
     icon: 'tabler:settings-cog'
+  },
+  {
+    path: '/add-job',
+    action: 'read',
+    subject: 'settings',
+    title: 'Add Scanning Jobs',
+    icon: 'gg:add'
   }
 ]
 

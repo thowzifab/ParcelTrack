@@ -1,0 +1,52 @@
+/* styles.css */
+@keyframes blink {
+  0% {
+    background-color: orange;
+  }
+  50% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: orange;
+  }
+}
+@keyframes blink-red {
+  0% {
+    background-color: red;
+  }
+  50% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: red;
+  }
+}
+
+
+.blinking-orange {
+  animation: blink 2s infinite; /* Adjust animation duration as needed */
+}
+.green {
+  background-color: lightgreen !important;
+}
+.blinking-red {
+  animation: blink-red 1s infinite; /* Adjust animation duration as needed */
+}
+
+.conveyor {
+  color: blue;
+  margin-left: 5px; 
+  margin-right: 5px;
+}
+
+.target-scans {
+  color: lightgreen;
+  margin-left: 5px; 
+  margin-right: 5px;
+}
+
+.min-target-scans {
+  color: orange;
+  margin-left: 5px; 
+  margin-right: 5px;
+}
