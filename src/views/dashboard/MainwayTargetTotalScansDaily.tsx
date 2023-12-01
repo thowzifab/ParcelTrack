@@ -15,8 +15,8 @@ import fetch from 'node-fetch'
 // The URL of the endpoint
 const url = 'http://localhost:8080/data'
 
-async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArray: string[] }> {
-  const totalScansArray: number[] = []
+async function fetchData(): Promise<{ targetTotalScansArray: number[]; timeStringsArray: string[] }> {
+  const targetTotalScansArray: number[] = []
   const timeStringsArray: string[] = []
 
   try {
@@ -32,7 +32,7 @@ async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArra
     })
 
     const latestDateRecords = dataArray.filter((item: any) => item.currentDate.split('T')[0] === latestDate)
-    const filteredRecords = latestDateRecords.filter((item: any) => item.conveyorBeltName === 'Amazon Overhead Scanner')
+    const filteredRecords = latestDateRecords.filter((item: any) => item.conveyorBeltName === 'Mainway')
 
     filteredRecords.forEach((item: any) => {
       const dateTime = new Date(item.currentDate)
@@ -42,7 +42,7 @@ async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArra
     filteredRecords.sort((a: any, b: any) => a.sortableTime - b.sortableTime)
 
     filteredRecords.forEach((item: any) => {
-      totalScansArray.push(item.totalScans)
+      targetTotalScansArray.push(item.targetTotalScans)
 
       const dateTime = new Date(item.currentDate)
       const hours = dateTime.getHours()
@@ -58,14 +58,14 @@ async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArra
     console.error('Error fetching data:', error)
   }
 
-  return { totalScansArray, timeStringsArray }
+  return { targetTotalScansArray, timeStringsArray }
 }
 
 // Use fetchData to set the series data
-fetchData().then(totalScansArray => {
+fetchData().then(targetTotalScansArray => {
   const series = [
     {
-      data: totalScansArray
+      data: targetTotalScansArray
     }
   ]
 
@@ -73,15 +73,15 @@ fetchData().then(totalScansArray => {
   console.log(series)
 })
 
-const AmazonTotalScansDaily = () => {
+const MainwayTargetTotalScansDaily = () => {
   const theme = useTheme()
   const [timeStrings, setTimeStrings] = useState<string[]>([])
-  const [totalScans, setTotalScans] = useState<number[]>([])
+  const [targetTotalScans, setTotalScans] = useState<number[]>([])
 
   useEffect(() => {
-    fetchData().then(({ totalScansArray, timeStringsArray }) => {
+    fetchData().then(({ targetTotalScansArray, timeStringsArray }) => {
       setTimeStrings(timeStringsArray)
-      setTotalScans(totalScansArray)
+      setTotalScans(targetTotalScansArray)
     })
   }, [])
 
@@ -91,13 +91,13 @@ const AmazonTotalScansDaily = () => {
       zoom: { enabled: false },
       toolbar: { show: false }
     },
-    colors: ['#019a2c'],
+    colors: ['#7367f0'],
     stroke: { curve: 'smooth' },
     dataLabels: { enabled: false },
     markers: {
       strokeWidth: 7,
       strokeOpacity: 1,
-      colors: ['#019a2c'],
+      colors: ['#7367f0'],
       strokeColors: ['#fff']
     },
     grid: {
@@ -134,11 +134,11 @@ const AmazonTotalScansDaily = () => {
 
   const series = [
     {
-      data: totalScans
+      data: targetTotalScans
     }
   ]
 
   return <ReactApexcharts type='line' height={200} options={options} series={series} />
 }
 
-export default AmazonTotalScansDaily
+export default MainwayTargetTotalScansDaily

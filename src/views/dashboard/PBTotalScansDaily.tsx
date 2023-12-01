@@ -32,7 +32,7 @@ async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArra
     })
 
     const latestDateRecords = dataArray.filter((item: any) => item.currentDate.split('T')[0] === latestDate)
-    const filteredRecords = latestDateRecords.filter((item: any) => item.conveyorBeltName === 'Amazon Overhead Scanner')
+    const filteredRecords = latestDateRecords.filter((item: any) => item.conveyorBeltName === 'PB Overhead Scanner')
 
     filteredRecords.forEach((item: any) => {
       const dateTime = new Date(item.currentDate)
@@ -73,7 +73,7 @@ fetchData().then(totalScansArray => {
   console.log(series)
 })
 
-const AmazonTotalScansDaily = () => {
+const PBTotalScansDaily = () => {
   const theme = useTheme()
   const [timeStrings, setTimeStrings] = useState<string[]>([])
   const [totalScans, setTotalScans] = useState<number[]>([])
@@ -141,4 +141,4 @@ const AmazonTotalScansDaily = () => {
   return <ReactApexcharts type='line' height={200} options={options} series={series} />
 }
 
-export default AmazonTotalScansDaily
+export default PBTotalScansDaily

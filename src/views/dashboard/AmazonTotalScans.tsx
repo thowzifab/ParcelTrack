@@ -27,8 +27,8 @@ const AmazonTotalScans = () => {
       <TabPanel value='1'>
         <AmazonTotalScansDaily />
       </TabPanel>
-      <TabPanel value='2'></TabPanel>
-      <TabPanel value='3'></TabPanel>
+      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )
 }
