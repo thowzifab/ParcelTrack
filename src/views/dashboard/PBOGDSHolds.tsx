@@ -7,9 +7,9 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
-import AmazonCBSAHoldsDaily from 'src/views/dashboard/AmazonCBSAHoldsDaily'
+import PBOGDSHoldsDaily from 'src/views/dashboard/PBOGDSHoldsDaily'
 
-const AmazonCBSAHolds = () => {
+const PBOGDSHolds = () => {
   // ** State
   const [value, setValue] = useState<string>('1')
 
@@ -25,7 +25,7 @@ const AmazonCBSAHolds = () => {
         <Tab value='3' label='Yearly' />
       </TabList>
       <TabPanel value='1'>
-        <AmazonCBSAHoldsDaily />
+        <PBOGDSHoldsDaily />
       </TabPanel>
       <TabPanel value='2'>Not Enough Data!</TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
@@ -33,4 +33,4 @@ const AmazonCBSAHolds = () => {
   )
 }
 
-export default AmazonCBSAHolds
+export default PBOGDSHolds
