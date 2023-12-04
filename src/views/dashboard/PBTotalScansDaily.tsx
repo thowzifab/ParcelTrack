@@ -45,13 +45,15 @@ async function fetchData(): Promise<{ totalScansArray: number[]; timeStringsArra
       totalScansArray.push(item.totalScans)
 
       const dateTime = new Date(item.currentDate)
-      const hours = dateTime.getHours()
-      const minutes = dateTime.getMinutes()
+      const isoString = dateTime.toISOString()
+      const hoursString = isoString.substring(11, 13)
+      const minutesString = isoString.substring(14, 16)
+      const hours = parseInt(hoursString, 10)
+      const minutes = parseInt(minutesString, 10)
       const ampm = hours >= 12 ? 'PM' : 'AM'
       const formattedHours = hours % 12 || 12
       const formattedMinutes = minutes < 10 ? '0' + minutes : minutes
       const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`
-
       timeStringsArray.push(timeString)
     })
   } catch (error) {
