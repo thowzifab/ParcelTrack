@@ -8,6 +8,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
 import AmazonTotalScansDaily from 'src/views/dashboard/AmazonTotalScansDaily'
+import AmazonTotalScansMonthly from 'src/views/dashboard/AmazonTotalScansMonthly'
 
 const AmazonTotalScans = () => {
   // ** State
@@ -27,7 +28,9 @@ const AmazonTotalScans = () => {
       <TabPanel value='1'>
         <AmazonTotalScansDaily />
       </TabPanel>
-      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='2'>
+        <AmazonTotalScansMonthly />
+      </TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )

@@ -8,6 +8,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
 import PBTargetTotalScansDaily from 'src/views/dashboard/PBTargetTotalScansDaily'
+import PBTargetTotalScansMonthly from 'src/views/dashboard/PBTargetTotalScansMonthly'
 
 const PBTargetTotalScans = () => {
   // ** State
@@ -27,7 +28,9 @@ const PBTargetTotalScans = () => {
       <TabPanel value='1'>
         <PBTargetTotalScansDaily />
       </TabPanel>
-      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='2'>
+        <PBTargetTotalScansMonthly />
+      </TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )

@@ -8,6 +8,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
 import MainwayTargetTotalScansDaily from 'src/views/dashboard/MainwayTargetTotalScansDaily'
+import MainwayTargetTotalScansMonthly from 'src/views/dashboard/MainwayTargetTotalScansMonthly'
 
 const MainwayTargetTotalScans = () => {
   // ** State
@@ -27,7 +28,9 @@ const MainwayTargetTotalScans = () => {
       <TabPanel value='1'>
         <MainwayTargetTotalScansDaily />
       </TabPanel>
-      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='2'>
+        <MainwayTargetTotalScansMonthly />
+      </TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )

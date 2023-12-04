@@ -8,6 +8,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
 import AmazonOGDSHoldsDaily from 'src/views/dashboard/AmazonOGDSHoldsDaily'
+import AmazonOGDSHoldsMonthly from 'src/views/dashboard/AmazonOGDSHoldsMonthly'
 
 const AmazonOGDSHolds = () => {
   // ** State
@@ -27,7 +28,9 @@ const AmazonOGDSHolds = () => {
       <TabPanel value='1'>
         <AmazonOGDSHoldsDaily />
       </TabPanel>
-      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='2'>
+        <AmazonOGDSHoldsMonthly />
+      </TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )

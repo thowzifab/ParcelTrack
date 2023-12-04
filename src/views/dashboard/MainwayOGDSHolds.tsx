@@ -8,6 +8,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 
 import MainwayOGDSHoldsDaily from 'src/views/dashboard/MainwayOGDSHoldsDaily'
+import MainwayOGDSHoldsMonthly from 'src/views/dashboard/MainwayOGDSHoldsMonthly'
 
 const MainwayOGDSHolds = () => {
   // ** State
@@ -27,7 +28,9 @@ const MainwayOGDSHolds = () => {
       <TabPanel value='1'>
         <MainwayOGDSHoldsDaily />
       </TabPanel>
-      <TabPanel value='2'>Not Enough Data!</TabPanel>
+      <TabPanel value='2'>
+        <MainwayOGDSHoldsMonthly />
+      </TabPanel>
       <TabPanel value='3'>Not Enough Data!</TabPanel>
     </TabContext>
   )
