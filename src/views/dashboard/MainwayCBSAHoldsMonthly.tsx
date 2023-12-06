@@ -13,7 +13,9 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 import fetch from 'node-fetch'
 
 // The URL of the endpoint
-const url = 'http://localhost:8080/data'
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
 
 async function fetchData(): Promise<{ cbsaHoldsArray: number[]; daysInMonthArray: string[] }> {
   const cbsaHoldsArray: number[] = []
