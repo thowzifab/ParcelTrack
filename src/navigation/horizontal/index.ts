@@ -25,6 +25,13 @@ const navigation = (): HorizontalNavItemsType => [
     subject: 'settings',
     title: 'Add Scanning Jobs',
     icon: 'gg:add'
+  },
+  {
+    path: '/edit-job',
+    action: 'read',
+    subject: 'settings',
+    title: 'Edit Scanning Jobs',
+    icon: 'gg:edit'
   }
 ]
 
