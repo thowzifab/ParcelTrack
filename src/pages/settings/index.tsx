@@ -1,5 +1,6 @@
 // ** React Imports
 import React, { useState, useEffect } from 'react'
+import config from "../../config";
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -11,136 +12,114 @@ import CustomTextField from 'src/@core/components/mui/text-field'
 import Badge from '@mui/material/Badge'
 import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
+import { SyntheticEvent } from 'react-draft-wysiwyg';
 
 function ServerSettings() {
-  const [scansPerHour, setScansPerHour] = useState({})
-  const [isSaveInProgress, setIsSaveInProgress] = useState(false)
-
-  const [machineSettings, setMachineSettings] = useState([
-    { machine_id: 1, jobID: 0, targetScans: 0 },
-    { machine_id: 2, jobID: 0, targetScans: 0 },
-    { machine_id: 3, jobID: 0, targetScans: 0 }
-  ])
-
-  const [selectedValues, setSelectedValues] = useState(Array(machineSettings.length).fill(''))
-  const [jobs, setJobs] = useState([])
-
-  const [targets, setTargets] = useState(Array(machineSettings.length).fill(''))
-
-  const [current, setCurrent] = useState([])
-
-  const handleJobChange = (index, event) => {
-    const selectedValue = event.target.value
-    const updatedTargets = [...targets]
-    const jobIndex = jobs.findIndex(job => job.jobID === selectedValue)
-    updatedTargets[index] = jobs[jobIndex].targetScans
-    setTargets(updatedTargets)
-
-    // Ensure that current is initialized as an array
-    const updatedValues = Array.isArray(current) ? [...current] : []
-
-    updatedValues[index] = {
-      ...updatedValues[index],
-      jobID: selectedValue
-    }
-
-    setCurrent(updatedValues)
+  
+  interface Job {
+    // Define the structure of your Job object
+    // For example:
+    jobID: string;
+    jobName: string;
+    // Add other properties as needed
   }
 
+  interface CurrentJobs {
+    machineID: string;
+    machineName: string;
+    jobID: string;
+    jobName: string;
+    targetScans: string;
+    minTargetScans: { String: string; Valid: boolean } | null;
+  }
+  const [jobs, setJobs] = useState<Job[] | null>(null);
+  
   const fetchJobs = () => {
-    // Fetch week numbers from the database
-    // Update the weeks state with the fetched data
-    fetch('http://192.168.15.75:8080/joblist' /*`http://127.0.0.1:8080/joblist`*/)
-      .then(response => response.json())
-      .then(data => {
-        //data = JSON.parse(data);
-        setJobs(data)
-      })
-      .catch(error => {
-        console.error(`Error fetching data:`, error)
-      })
-  }
-
-  const fetchCurrent = () => {
-    fetch('http://192.168.15.75:8080/currentJobs' /* `http://127.0.0.1:8080/currentJobs`*/)
-      .then(response => response.json())
-      .then(data => {
-        setCurrent(data)
-      })
-      .catch(error => {
-        console.error(`Error fetching data:`, error)
-      })
-  }
-
+    
+  
+    // Empty dependency array to ensure useEffect runs only once on mount
+  
+    return jobs;
+  };
   useEffect(() => {
-    // Fetch data from the API endpoint
-    fetch('http://192.168.15.75:8080/machineSettings' /*'http://127.0.0.1:8080/machineSettings'*/)
-      .then(response => response.json())
-      .then(data => {
-        // Initialize scansPerHour state with default values for all machine IDs
-        const scansData = {}
-        data.forEach(server => {
-          scansData[server.machine_id] = server.target_total_scans
-        })
-        setScansPerHour(scansData)
-        setMachineSettings(data)
-      })
-      .catch(error => {
-        console.error('Error:', error)
-
-        // Handle errors if needed
-      })
-
-    fetchJobs()
-    fetchCurrent()
-  }, [])
-
-  const handleScansPerHourChange = (machineId, value) => {
-    setScansPerHour({
-      ...scansPerHour,
-      [machineId]: parseInt(value, 10) // Convert value to an integer
-    })
-  }
-
-  const handleSaveClick = async () => {
-    try {
-      // Loop through machine settings and send PUT requests for each machine
-      if (isSaveInProgress) {
-        return
-      }
-
-      // Set the flag to indicate that save is in progress
-      setIsSaveInProgress(true)
-
-      for (const machine of machineSettings) {
-        const data = {
-          machineID: machine.machine_id,
-          jobID: current[machineSettings.indexOf(machine)].jobID
-        }
-
-        // Make a PUT request to your API endpoint for each machine
-        const response = await fetch('http://192.168.15.75:8080/currentJobs' /* 'http://127.0.0.1:8080/currentJobs'*/, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
+    const fetchData = async () => {
+      try {
+        // Fetch week numbers from the database
+        // Update the jobs state with the fetched data
+        const response = await fetch(`http://${config.server}/joblist`);
 
         if (!response.ok) {
-          alert(`Failed to update server settings for ${machine.name}.`)
-
-          return // Stop processing if any request fails
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data: Job[] = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error(`Error fetching data:`, error);
       }
-      alert('Server settings updated successfully.')
-    } catch (error) {
-      console.error('Error:', error)
-      alert('An error occurred while updating scans per hour settings.')
+    };
+
+    fetchData();
+  }, []); 
+  
+  const handleSaveClick = async (machineID: string, event: SyntheticEvent) => {
+    const selectedJobID = (event.target as HTMLDivElement).parentNode?.querySelector('select')?.value;
+  
+    if (selectedJobID) {
+      const data = {
+        machineID: machineID,
+        jobID: selectedJobID,
+      };
+  
+      try {
+        // Make a POST request to your API endpoint for each machine
+        const response = await fetch(`http://${config.server}/currentJobs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        // Assuming fetchCurrentJobs is a function that fetches and updates data
+        fetchCurrentJobs();
+      } catch (error) {
+        console.error(`Error during POST request:`, error);
+      }
     }
-    fetchCurrent()
-    setIsSaveInProgress(false)
-  }
+  };
+
+  const [currentJobs, setCurrentJobs] = useState<CurrentJobs[]>([]); // Replace YourDataType with the actual type of your data
+
+  const fetchCurrentJobs = async () => {
+    try {
+      // Fetch week numbers from the database
+      // Update the currentJobs state with the fetched data
+      const response = await fetch(`http://${config.server}/currentJobs`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data: CurrentJobs[] = await response.json();
+      setCurrentJobs(data);
+    } catch (error) {
+      console.error(`Error fetching data:`, error);
+    }
+  };
+
+  
+
+  useEffect(() => {
+    fetchCurrentJobs();
+    fetchJobs();
+  }, []);
+
+  
 
   return (
     <Grid container spacing={6}>
@@ -148,48 +127,47 @@ function ServerSettings() {
 
       <Grid container spacing={6}>
         <h2>Scan Per Hour Settings</h2>
-        {machineSettings.map((machine, index) => {
-          const currentJob = current?.find(job => job.machineID === machine.machine_id)
-          const selectedJob = jobs?.find(j => j.jobID === (currentJob ? currentJob.jobID : ''))
-
+        {currentJobs.map(j => {
           return (
-            <Grid container spacing={6} key={machine.machine_id}>
+            <Grid container spacing={6} key={j.machineID}>
               <Grid item md={12} xs={12}>
                 <Card>
-                  <CardHeader title={machine.name} />
+                  <CardHeader title={j.machineName} />
                   <CardContent>
                     <Grid container spacing={6}>
                       <Grid item md={3} xs={12}>
-                        <Alert severity='error'>Current Job: {currentJob ? currentJob.jobName : ''}</Alert>
+                        <Alert severity='error'>Current Job: {`${j.jobName ? j.jobName : ''}`}</Alert>
                       </Grid>
                       <Grid item md={3} xs={12}>
-                        <Alert severity='info'>Target: {currentJob ? currentJob.targetScans : ''}</Alert>
+                        <Alert severity='info'>Target: {j.targetScans}</Alert>
                       </Grid>
 
                       <Grid item md={3} xs={12}>
                         <Alert severity='success'>
                           Min Target:{' '}
                           <span className='min-target-scans'>
-                            {currentJob ? currentJob.minTargetScans['String'] : ''}
+                            {j.minTargetScans?.String}
                           </span>
                         </Alert>
                       </Grid>
 
                       <Grid item md={3} xs={12}>
-                        <Badge badgeContent={targets[index]} color='primary'>
+                        <Badge /* badgeContent={targets[index]} */ color='primary'>
                           <CustomTextField
                             select
                             defaultValue=''
                             label=''
                             id='custom-select'
-                            value={selectedJob ? selectedJob.jobID : ''}
-                            onChange={e => handleJobChange(index, e)}
+                            /* value={selectedJob ? selectedJob.jobID : ''}
+                            onChange={e => handleJobChange(index, e)} */
                           >
-                            {jobs.map(j => (
+                            {jobs ? (jobs.map(j => (
                               <MenuItem key={j.jobID} value={j.jobID}>
                                 {j.jobName}
                               </MenuItem>
-                            ))}
+                            ))):(
+                              <MenuItem>No jobs available</MenuItem>
+                            )}
                           </CustomTextField>
                         </Badge>
                       </Grid>
@@ -204,9 +182,9 @@ function ServerSettings() {
 
       {/* Save Button */}
       <Grid item md={3} xs={12}>
-        <Button variant='contained' size='large' onClick={handleSaveClick}>
+        {/* <Button variant='contained' size='large' onClick={handleSaveClick}>
           Save Settings
-        </Button>
+        </Button> */}
       </Grid>
     </Grid>
   )
