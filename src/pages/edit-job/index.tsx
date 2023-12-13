@@ -32,12 +32,12 @@ const Home = () => {
   const [targetScansError, setTargetScansError] = useState('');
   const [minTargetScansError, setMinTargetScansError] = useState('');
 
-  const [jobName, setJobName] = useState<string>('');
+  /* const [jobName, setJobName] = useState<string>('');
   const [targetScans, setTargetScans] = useState<number>(0);
   const [minTargetScans, setMinTargetScans] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>(''); */
   const [jobNameError, setJobNameError] = useState<string>('');
-  const [showAddJobForm, setShowAddJobForm] = useState<boolean>(true);
+  /* const [showAddJobForm, setShowAddJobForm] = useState<boolean>(true); */
   /* const [selectedValues, setSelectedValues] = useState(""); */
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -93,23 +93,6 @@ const Home = () => {
     
 
   };
-  
-
-  const handleJobChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setJobName(event.target.value);
-    setJobNameError('');
-  };
-
-  const handleTargetScanChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTargetScans(Number(event.target.value));
-    setErrorMessage('');
-  };
-
-  const handleMinTargetScanChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMinTargetScans(Number(event.target.value));
-    setErrorMessage('');
-  };
-
 
 
   useEffect(() => {

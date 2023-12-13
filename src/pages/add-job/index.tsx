@@ -79,24 +79,6 @@ const Home = () => {
   
 
   const addJobClick = async () => {
-    /* if (jobName.trim() === '') {
-      setJobNameError('Job name cannot be empty.');
-      return;
-    }
-
-    if (
-      isNaN(Number(targetScans)) ||
-      isNaN(Number(minTargetScans)) ||
-      parseInt(targetScans as string, 10) < 0 ||
-      parseInt(minTargetScans as string, 10) < 0 ||
-      parseInt(minTargetScans as string, 10) > parseInt(targetScans as string, 10)
-    ) {
-      setErrorMessage(
-        'Invalid input. Please ensure Target Scans is a non-negative number and Minimum Target Scans is less than Target Scans.'
-      );
-      return;
-    } */
-
     if (jobNameError || errorMessage) {
       alert('Please fix the errors in the form before proceeding.');
       return;

@@ -63,7 +63,8 @@ function ServerSettings() {
   }, []); 
   
   const handleSaveClick = async (machineID: string, event: SyntheticEvent) => {
-    const selectedJobID = (event.target as HTMLDivElement).parentNode?.querySelector('select')?.value;
+    const selectedJobID = selectedJobs[machineID];
+    console.log('Selected Job ID for machine', machineID, ':', selectedJobID);
   
     if (selectedJobID) {
       const data = {
@@ -91,6 +92,16 @@ function ServerSettings() {
         console.error(`Error during POST request:`, error);
       }
     }
+  };
+
+  const [selectedJobs, setSelectedJobs] = useState<{ [key: string]: string }>({}); // State to store selected job IDs
+
+  const handleJobChange = (event: React.ChangeEvent<{ value: unknown }>, machineID: string) => {
+    const selectedJobID = event.target.value as string;
+    setSelectedJobs((prevSelectedJobs) => ({
+      ...prevSelectedJobs,
+      [machineID]: selectedJobID,
+    }));
   };
 
   const [currentJobs, setCurrentJobs] = useState<CurrentJobs[]>([]); // Replace YourDataType with the actual type of your data
@@ -151,15 +162,16 @@ function ServerSettings() {
                         </Alert>
                       </Grid>
 
-                      <Grid item md={3} xs={12}>
+                      <Grid item md={2} xs={12}>
                         <Badge /* badgeContent={targets[index]} */ color='primary'>
                           <CustomTextField
+                            fullWidth
                             select
                             defaultValue=''
                             label=''
                             id='custom-select'
-                            /* value={selectedJob ? selectedJob.jobID : ''}
-                            onChange={e => handleJobChange(index, e)} */
+                            value={selectedJobs[j.machineID] || ''} // Use the selected job for this row
+                            onChange={(e) => handleJobChange(e, j.machineID)}
                           >
                             {jobs ? (jobs.map(j => (
                               <MenuItem key={j.jobID} value={j.jobID}>
@@ -171,6 +183,12 @@ function ServerSettings() {
                           </CustomTextField>
                         </Badge>
                       </Grid>
+
+                      <Grid item md={1} xs={12}>
+                        <Button variant='contained' size='small' onClick={(e: React.SyntheticEvent<HTMLButtonElement>) => handleSaveClick(j.machineID, e)}>
+                          Save Settings
+                        </Button>
+                      </Grid>
                     </Grid>
                   </CardContent>
                 </Card>
@@ -181,11 +199,7 @@ function ServerSettings() {
       </Grid>
 
       {/* Save Button */}
-      <Grid item md={3} xs={12}>
-        {/* <Button variant='contained' size='large' onClick={handleSaveClick}>
-          Save Settings
-        </Button> */}
-      </Grid>
+      
     </Grid>
   )
 }
