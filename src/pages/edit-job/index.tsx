@@ -7,7 +7,7 @@ import { Button, TextField } from '@mui/material'
 // The URL of the endpoint
 import config from 'src/views/dashboard/config.json'
 
-const url = config.apiUrl
+const url = config.apiUrl2
 
 import React, { useState, ChangeEvent, useEffect } from 'react';
 
