@@ -1,6 +1,10 @@
 // ** React Imports
 import React, { useState, useEffect } from 'react'
-import config from "../../config";
+
+// The URL of the endpoint
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -46,7 +50,7 @@ function ServerSettings() {
       try {
         // Fetch week numbers from the database
         // Update the jobs state with the fetched data
-        const response = await fetch(`http://${config.server}/joblist`);
+        const response = await fetch(`${url}/joblist`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -74,7 +78,7 @@ function ServerSettings() {
   
       try {
         // Make a POST request to your API endpoint for each machine
-        const response = await fetch(`http://${config.server}/currentJobs`, {
+        const response = await fetch(`${url}/currentJobs`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -110,7 +114,7 @@ function ServerSettings() {
     try {
       // Fetch week numbers from the database
       // Update the currentJobs state with the fetched data
-      const response = await fetch(`http://${config.server}/currentJobs`);
+      const response = await fetch(`${url}/currentJobs`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

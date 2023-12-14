@@ -4,7 +4,11 @@ import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { Button, TextField } from '@mui/material'
-import config from "../../config"
+// The URL of the endpoint
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
+
 import React, { useState, ChangeEvent, useEffect } from 'react';
 
 import EditSelectedJob from 'src/views/edit-job/EditSelectedJob'
@@ -100,7 +104,7 @@ const Home = () => {
   }, []);
 
   const fetchJobs = () => {
-    fetch(`http://${config.server}/joblist`)
+    fetch(`${url}/joblist`)
       .then((response) => response.json())
       .then((data) => {
         setJobs(data);
@@ -138,7 +142,7 @@ const Home = () => {
         });
 
 
-        const response = await fetch(`http://${config.server}/joblist/${jobID}`, {
+        const response = await fetch(`${url}/joblist/${jobID}`, {
           method: 'DELETE',
         });
 
@@ -177,7 +181,7 @@ const Home = () => {
       };
   
       // Make a PATCH request to your API endpoint for each machine
-      const response = await fetch('http://' + config.server + '/joblist/' + jobID, {
+      const response = await fetch(url + '/joblist/' + jobID, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

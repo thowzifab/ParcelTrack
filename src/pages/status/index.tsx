@@ -6,7 +6,20 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { Typography } from '@mui/material'
 
+import config from 'src/config'
+
 const ServerStatus = () => {
+  const [currentJobs, setCurrentJobs] = useState<CurrentJobs[]>([]);
+
+  interface CurrentJobs{
+    machineID: string;
+    machineName: string; 
+    jobID: string; 
+    jobName: string;
+    targetScans: string;
+    minTargetScans: {String: string; Valid: boolean} | null;
+  }
+
   const [serverData, setServerData] = useState({
     Mainway: {
       scanPerHour: 0,
@@ -48,15 +61,36 @@ const ServerStatus = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const getClassName = (scanPaceStatus: string) => {
-    if (scanPaceStatus === 'On Target') {
+  const getClassName = (scannedParcels: number, jobs: CurrentJobs[], conveyor: string ) => {
+    /* if (jobs.filter((job) => job.machineName === conveyor)) {
+      
       return 'blinking-orange';
     } else if (scanPaceStatus === 'Fast') {
       return 'green';
     }
     // Default to 'green' if neither 'On Target' nor 'Fast'
-    return 'blinking-red';
+    return 'blinking-red'; */
   };
+
+  const fetchCurrentJobs = async () => {
+    try {
+      const response = await fetch(`http://${config.server}/currentJobs`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+
+      const data: CurrentJobs[] = await response.json();
+      setCurrentJobs(data)
+
+    } catch (error) {
+      console.error(`Error fetching data:`, error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCurrentJobs();
+  }, []);
 
   const fetchServerData = (serverName: string, serverKey: string) => {
     fetch(/* `http://192.168.15.80:8080/scannedHourlySinceStart/${serverName}` */`http://127.0.0.1:8080/scannedHourlySinceStart/${serverName}`)
@@ -82,7 +116,7 @@ const ServerStatus = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Card className={`${getClassName(serverData.Mainway.scanPaceStatus)}`}>
+        <Card className={`${getClassName(serverData.Mainway.scannedParcels, currentJobs, "Mainway")}`}>
           <CardHeader title='Mainway'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">

@@ -10,7 +10,10 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 
-import config from "src/config";
+// The URL of the endpoint
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
 
 type StatType = string;
 
@@ -93,7 +96,7 @@ const ScanStats: React.FC = () =>  {
               requestBody.endDate = endDate.toISOString(); // Assuming you need to convert to a string
             }
       
-            const response = await fetch(`http://${config.server}/stats`, {
+            const response = await fetch(`${url}/stats`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

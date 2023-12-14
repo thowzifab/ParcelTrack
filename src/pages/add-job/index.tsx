@@ -9,7 +9,10 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { Button, TextField } from '@mui/material'
 
-import config from 'src/config';
+// The URL of the endpoint
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
 
 const Home = () => {
   const [jobName, setJobName] = useState<string>('');
@@ -100,7 +103,7 @@ const Home = () => {
         formData.append(key, value.toString());
         });
 
-      const response = await fetch('http://' + config.server + '/joblist', {
+      const response = await fetch( url + '/joblist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
