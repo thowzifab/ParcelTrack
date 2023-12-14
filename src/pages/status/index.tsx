@@ -6,7 +6,10 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { Typography } from '@mui/material'
 
-import config from 'src/config'
+// The URL of the endpoint
+import config from 'src/views/dashboard/config.json'
+
+const url = config.apiUrl
 
 const ServerStatus = () => {
   const [currentJobs, setCurrentJobs] = useState<CurrentJobs[]>([]);
@@ -61,20 +64,30 @@ const ServerStatus = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const getClassName = (scannedParcels: number, jobs: CurrentJobs[], conveyor: string ) => {
-    /* if (jobs.filter((job) => job.machineName === conveyor)) {
-      
-      return 'blinking-orange';
-    } else if (scanPaceStatus === 'Fast') {
-      return 'green';
+  const getClassName = (scannedParcels: number, j: CurrentJobs[], conveyor: string ) => {
+    const matchingJob = j.find((job) => job.machineName === conveyor);
+
+      if (matchingJob && matchingJob.targetScans && typeof matchingJob.targetScans === 'string') {
+      const targetScansValue = parseInt(matchingJob.targetScans, 10);
+
+      if (scannedParcels > targetScansValue) {
+        return 'green';
+      }
+    }else if (matchingJob && matchingJob.minTargetScans && typeof matchingJob.minTargetScans.String === 'string') {
+      const minTargetScansValue = parseInt(matchingJob.minTargetScans.String, 10);
+
+      if (scannedParcels > minTargetScansValue) {
+        return 'blinking-orange';
+      }
     }
+    
     // Default to 'green' if neither 'On Target' nor 'Fast'
-    return 'blinking-red'; */
+    return 'blinking-red';
   };
 
   const fetchCurrentJobs = async () => {
     try {
-      const response = await fetch(`http://${config.server}/currentJobs`);
+      const response = await fetch(`${url}/currentJobs`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
@@ -93,7 +106,7 @@ const ServerStatus = () => {
   }, []);
 
   const fetchServerData = (serverName: string, serverKey: string) => {
-    fetch(/* `http://192.168.15.80:8080/scannedHourlySinceStart/${serverName}` */`http://127.0.0.1:8080/scannedHourlySinceStart/${serverName}`)
+    fetch(/* `http://192.168.15.80:8080/scannedHourlySinceStart/${serverName}` */`${url}/scannedHourlySinceStart/${serverName}`)
       .then((response) => response.json())
       .then((data) => {
         data = JSON.parse(data);
@@ -124,7 +137,7 @@ const ServerStatus = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={`${getClassName(serverData.PBOverheadScanner.scanPaceStatus)}`}>
+        <Card className={`${getClassName(serverData.PBOverheadScanner.scannedParcels, currentJobs, "PB Overhead Scanner")}`}>
           <CardHeader title='PB Overhead Scanner'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">
@@ -132,7 +145,7 @@ const ServerStatus = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={`${getClassName(serverData.AmazonOverheadScanner.scanPaceStatus)}`}>
+        <Card className={`${getClassName(serverData.AmazonOverheadScanner.scannedParcels, currentJobs, "Amazon Overhead Scanner")}`}>
           <CardHeader title='Amazon Overhead Scanner'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">
