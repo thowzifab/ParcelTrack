@@ -39,6 +39,13 @@ const navigation = (): HorizontalNavItemsType => [
     subject: 'settings',
     title: 'Scan Statistics',
     icon: 'gg:edit'
+  }, 
+  {
+    path: '/package-log',
+    action: 'read',
+    subject: 'settings',
+    title: 'Package Log',
+    icon: 'gg:edit'
   }
 ]
 
