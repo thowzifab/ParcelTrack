@@ -129,7 +129,7 @@ const ServerStatus = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Card className={`${getClassName(serverData.Mainway.scannedParcels, currentJobs, "Mainway")}`}>
+        <Card className={`${getClassName(serverData.Mainway.scanPerHour, currentJobs, "Mainway")}`}>
           <CardHeader title='Mainway'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">
@@ -137,7 +137,7 @@ const ServerStatus = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={`${getClassName(serverData.PBOverheadScanner.scannedParcels, currentJobs, "PB Overhead Scanner")}`}>
+        <Card className={`${getClassName(serverData.PBOverheadScanner.scanPerHour, currentJobs, "PB Overhead Scanner")}`}>
           <CardHeader title='PB Overhead Scanner'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">
@@ -145,7 +145,7 @@ const ServerStatus = () => {
             </Typography>
           </CardContent>
         </Card>
-        <Card className={`${getClassName(serverData.AmazonOverheadScanner.scannedParcels, currentJobs, "Amazon Overhead Scanner")}`}>
+        <Card className={`${getClassName(serverData.AmazonOverheadScanner.scanPerHour, currentJobs, "Amazon Overhead Scanner")}`}>
           <CardHeader title='Amazon Overhead Scanner'></CardHeader>
           <CardContent>
             <Typography gutterBottom variant='body2' component="div">
