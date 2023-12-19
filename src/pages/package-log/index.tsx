@@ -7,18 +7,20 @@ import Grid from '@mui/material/Grid';
 
 const url = config.apiUrl2;
 
+type PLogInfo = {
+  ParcelID: string;
+  DateScanned: string;
+  Bin: string | null; // Use string | null to represent a nullable string
+  ScannedAt: string | null; // Use string | null to represent a nullable string
+  ShiftID: string | null; // Use string | null to represent a nullable string
+  id: number;
+};
+
 export default function DataTable() {
-    const [plog, setPLog] = useState<Array<{ ParcelID: string; DateScanned: string; Bin: string; ScannedAt: string; ShiftID: string; id: number }>>([]);
+    const [plog, setPLog] = useState<PLogInfo[]>([]);
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredRows, setFilteredRows] = useState<{
-        id: number;
-        ParcelID: string;
-        DateScanned: string;
-        Bin: string;
-        ScannedAt: string;
-        ShiftID: string;
-      }[]>([]);
+    const [filteredRows, setFilteredRows] = useState<PLogInfo[]>([]);
 
     const handleSearch = (event: { target: { value: any; }; }) => {
         const query = event.target.value;
@@ -46,8 +48,14 @@ export default function DataTable() {
   
         const data = await response.json();
 
-        
-        setPLog(JSON.parse(data));
+        setPLog(JSON.parse(data).map((item: any, index: number) => ({
+          ParcelID: item.parcel_ID,
+          DateScanned: item.date_scanned,
+          Bin: item.bin?.String ?? null,
+          ScannedAt: item.scanned_at?.String ?? null,
+          ShiftID: item.shift_ID?.Int64?.toString() ?? null,
+          id: index,
+        })));
 
       } catch (error) {
         console.error(`Error during GET request:`, error);
@@ -59,15 +67,15 @@ export default function DataTable() {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: 'parcel_ID', headerName: 'Parcel ID', flex: 1 },
-    { field: 'date_scanned', headerName: 'Date Scanned', flex: 1,
+    { field: 'ParcelID', headerName: 'Parcel ID', flex: 1 },
+    { field: 'DateScanned', headerName: 'Date Scanned', flex: 1,
         valueGetter: (params) => {
         const date = new Date(params.value as string); // Assuming date_scanned is a string
         return date.toLocaleString(); // Adjust the formatting based on your requirements
         }, },
-    { field: 'bin', headerName: 'Bin', flex: 1 },
-    { field: 'conveyor', headerName: 'Conveyor', flex: 1 },
-    { field: 'shift_ID', headerName: 'Shift ID', type: 'number', flex: 1 },
+    { field: 'Bin', headerName: 'Bin', flex: 1 },
+    { field: 'ScannedAt', headerName: 'Conveyor', flex: 1 },
+    { field: 'ShiftID', headerName: 'Shift ID', type: 'number', flex: 1 },
   ];
 
 
