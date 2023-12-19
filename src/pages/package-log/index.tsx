@@ -23,6 +23,7 @@ export default function DataTable() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredRows, setFilteredRows] = useState<PLogInfo[]>([]);
     const [matchedRowIndex, setMatchedRowIndex] = useState<number >();
+    const [selectedRowId, setSelectedRowId] = useState<number >();
 
     const handleSearch = (event: { target: { value: any; }; }) => {
         const query = event.target.value;
@@ -47,6 +48,7 @@ export default function DataTable() {
         const filteredData = rowsWithId.slice(startIndex, endIndex + 1);
 
         setFilteredRows(filteredData);
+        setSelectedRowId(matchedIndex);
       };
 
     useEffect(() => {
@@ -94,6 +96,16 @@ export default function DataTable() {
 
 
   const rowsWithId = plog.map((row, index) => ({ ...row, id: index }));
+  const getRowClassName = (params: { row: { id: number | undefined; }; }) => {
+    // Check if the row's ID matches the selectedRowId
+    if (params.row.id === selectedRowId) {
+      // Set the background color for the selected row
+      return 'highlighted-row'; // Adjust the class name as needed
+    }
+
+    // Return the default style for other rows
+    return '';
+  };
 
   return (
     <div style={{ height: 650, width: '100%' }}>
@@ -126,6 +138,8 @@ export default function DataTable() {
                 getRowId={(row) => row.id} 
                 pagination
                 disableRowSelectionOnClick 
+                
+                getRowClassName={getRowClassName}
             />
         </Grid>
       

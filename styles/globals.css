@@ -75,3 +75,7 @@ code[class*='language-'] {
   margin-left: 5px; 
   margin-right: 5px;
 }
+
+.highlighted-row {
+  background-color: orange; /* Choose a highlight color */
+}
