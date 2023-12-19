@@ -22,6 +22,7 @@ export default function DataTable() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredRows, setFilteredRows] = useState<PLogInfo[]>([]);
+    const [matchedRowIndex, setMatchedRowIndex] = useState<number >();
 
     const handleSearch = (event: { target: { value: any; }; }) => {
         const query = event.target.value;
@@ -35,6 +36,10 @@ export default function DataTable() {
               value.toLowerCase().includes(query.toLowerCase())
           )
         );
+
+        console.log('Before setting matchedRowIndex:', matchedIndex);
+        setMatchedRowIndex(matchedIndex);
+        console.log('After setting matchedRowIndex:', matchedRowIndex);
 
         // Extract the range of rows centered around the matched index
         const startIndex = Math.max(0, matchedIndex - 3);
@@ -112,6 +117,9 @@ export default function DataTable() {
                     paginationModel: { page: 0, pageSize: 10 },
                     },
                 }} 
+                getRowClassName={(params) =>
+                  params.row.id === matchedRowIndex ? 'highlighted-row' : ''
+                }
                 components={{
                     Toolbar: GridToolbar, // Use the MUI GridToolbar for default functionality
                   }}
