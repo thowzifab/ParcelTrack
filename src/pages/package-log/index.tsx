@@ -13,6 +13,7 @@ type PLogInfo = {
   Bin: string | null; // Use string | null to represent a nullable string
   ScannedAt: string | null; // Use string | null to represent a nullable string
   ShiftID: string | null; // Use string | null to represent a nullable string
+  CartonID: string | null; 
   id: number;
 };
 
@@ -27,13 +28,19 @@ export default function DataTable() {
         setSearchQuery(query);
     
         // Filter the rows based on the search query
-        const filteredData = rowsWithId.filter((row) =>
+        const matchedIndex = rowsWithId.findIndex((row) =>
           Object.values(row).some(
             (value) =>
               typeof value === 'string' &&
               value.toLowerCase().includes(query.toLowerCase())
           )
         );
+
+        // Extract the range of rows centered around the matched index
+        const startIndex = Math.max(0, matchedIndex - 3);
+        const endIndex = Math.min(rowsWithId.length , matchedIndex + 3);
+        const filteredData = rowsWithId.slice(startIndex, endIndex + 1);
+
         setFilteredRows(filteredData);
       };
 
@@ -54,6 +61,7 @@ export default function DataTable() {
           Bin: item.bin?.String ?? null,
           ScannedAt: item.scanned_at?.String ?? null,
           ShiftID: item.shift_ID?.Int64?.toString() ?? null,
+          CartonID: item.carton_id?.String ?? null,
           id: index,
         })));
 
@@ -76,6 +84,7 @@ export default function DataTable() {
     { field: 'Bin', headerName: 'Bin', flex: 1 },
     { field: 'ScannedAt', headerName: 'Conveyor', flex: 1 },
     { field: 'ShiftID', headerName: 'Shift ID', type: 'number', flex: 1 },
+    { field: 'CartonID', headerName: 'Carton ID',  flex: 1 },
   ];
 
 
