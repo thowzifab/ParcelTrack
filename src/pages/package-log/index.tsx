@@ -66,7 +66,7 @@ export default function DataTable() {
           ParcelID: item.parcel_ID,
           DateScanned: item.date_scanned,
           Bin: item.bin?.String ?? null,
-          ScannedAt: item.scanned_at?.String ?? null,
+          ScannedAt: item.conveyor?.String ?? null,
           ShiftID: item.shift_ID?.Int64?.toString() ?? null,
           CartonID: item.carton_id?.String ?? null,
           id: index,
